@@ -1,0 +1,46 @@
+name: smartbank_mobile
+description: SmartBank AI Mobile App
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # HTTP requests
+  http: ^1.1.0
+  
+  # Secure storage for JWT token
+  flutter_secure_storage: ^9.0.0
+  
+  # State management (optional)
+  provider: ^6.1.0
+  
+  # UI
+  cupertino_icons: ^1.0.2
+  fl_chart: ^0.65.0
+  intl: ^0.18.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: assets/fonts/Manrope-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Manrope-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Manrope-ExtraBold.ttf
+          weight: 800
+
+  assets:
+    - assets/images/  # Add this line to include all images in the assets/images directory        
