@@ -4,6 +4,7 @@ import 'transactions_screen.dart';
 import 'insights_screen.dart';
 import 'alerts_screen.dart';
 import 'predictions_screen.dart';
+import 'optimize_screen.dart';
 import '../services/api_service.dart';
 import 'login_screen.dart';
 
@@ -31,6 +32,7 @@ class _MainNavigationState extends State<MainNavigation> {
         HomeScreen(accountId: accountId),
         TransactionsScreen(accountId: accountId),
         InsightsScreen(accountId: accountId),
+        OptimizeScreen(accountId: accountId),
         AlertsScreen(accountId: accountId),
         PredictionsScreen(accountId: accountId),
       ];
@@ -104,15 +106,21 @@ class _MainNavigationState extends State<MainNavigation> {
                 ),
                 _buildNavItem(
                   index: 3,
-                  icon: Icons.notifications,
-                  label: 'ALERTS',
+                  icon: Icons.savings,
+                  label: 'OPTIMIZE',
                   isActive: _currentIndex == 3,
                 ),
                 _buildNavItem(
                   index: 4,
+                  icon: Icons.notifications,
+                  label: 'ALERTS',
+                  isActive: _currentIndex == 4,
+                ),
+                _buildNavItem(
+                  index: 5,
                   icon: Icons.timeline,
                   label: 'FORECAST',
-                  isActive: _currentIndex == 4,
+                  isActive: _currentIndex == 5,
                 ),
               ],
             ),

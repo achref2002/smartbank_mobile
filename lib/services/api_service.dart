@@ -521,4 +521,39 @@ class ApiService {
       throw Exception('Network error: $e');
     }
   }
+
+  Future<Map<String, dynamic>> getBacktest({
+    required String accountId,
+    int testDays = 14,
+  }) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/accounts/$accountId/balance/backtest?test_days=$testDays'),
+        headers: await getHeaders(),
+      ).timeout(const Duration(seconds: 60));
+      if (response.statusCode == 200) {
+        return Map<String, dynamic>.from(json.decode(response.body) as Map);
+      }
+      throw Exception('Backtest failed: ${response.statusCode}');
+    } catch (e) {
+      throw Exception('Network error: $e');
+    }
+  }
+
+  /// Module 1 — Optimize: get saving recommendations for fixed charges.
+  Future<Map<String, dynamic>> getOptimizeRecommendations(String accountId) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/accounts/$accountId/optimize'),
+      headers: await getHeaders(),
+    ).timeout(const Duration(seconds: 30));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    } else if (response.statusCode == 403) {
+      throw Exception('Accès refusé à ce compte');
+    } else {
+      final err = jsonDecode(response.body);
+      throw Exception(err['detail'] ?? 'Erreur optimize');
+    }
+  }
 }

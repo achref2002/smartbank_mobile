@@ -48,16 +48,20 @@ class OverdraftRisk {
   });
 
   factory OverdraftRisk.fromJson(Map<String, dynamic> json) {
+    double _d(String key, [double fallback = 0.0]) =>
+        json[key] != null ? (json[key] as num).toDouble() : fallback;
     return OverdraftRisk(
-      riskScore: (json['risk_score'] as num).toDouble(),
-      riskLevel: json['risk_level'] as String,
+      riskScore: _d('risk_score'),
+      riskLevel: json['risk_level'] as String? ?? 'unknown',
       daysUntilOverdraft: json['days_until_overdraft'] as int?,
-      minPredictedBalance: (json['min_predicted_balance'] as num).toDouble(),
-      currentBalance: (json['current_balance'] as num).toDouble(),
-      pendingRecurring: (json['pending_recurring'] as num).toDouble(),
-      realBalance: (json['real_balance'] as num).toDouble(),
-      actions: List<String>.from(json['actions'] as List),
-      forecastHorizon: json['forecast_horizon'] as int,
+      minPredictedBalance: _d('min_predicted_balance'),
+      currentBalance: _d('current_balance'),
+      pendingRecurring: _d('pending_recurring'),
+      realBalance: _d('real_balance'),
+      actions: json['actions'] != null
+          ? List<String>.from(json['actions'] as List)
+          : const [],
+      forecastHorizon: json['forecast_horizon'] as int? ?? 30,
     );
   }
 
@@ -81,6 +85,8 @@ class BalancePredictionResponse {
   final String? forecastStart;
   final String? forecastEnd;
   final String? lastDataDate;
+  // "high" | "medium" | "low" — drives confidence banner in UI
+  final String? forecastQuality;
 
   BalancePredictionResponse({
     required this.accountId,
@@ -94,6 +100,7 @@ class BalancePredictionResponse {
     this.forecastStart,
     this.forecastEnd,
     this.lastDataDate,
+    this.forecastQuality,
   });
 
   /// True when the forecast's target dates are all in the past relative to today.
@@ -126,8 +133,13 @@ class BalancePredictionResponse {
       forecastStart:    json['forecast_start']   as String?,
       forecastEnd:      json['forecast_end']     as String?,
       lastDataDate:     json['last_data_date']   as String?,
+      forecastQuality:  json['forecast_quality'] as String?,
     );
   }
+
+  bool get isHighQuality  => forecastQuality == 'high';
+  bool get isMediumQuality => forecastQuality == 'medium';
+  bool get isLowQuality   => forecastQuality == 'low' || forecastQuality == null;
 }
 
 class GeminiStats {
